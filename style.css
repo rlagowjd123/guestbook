@@ -19,9 +19,15 @@
   box-sizing: border-box;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
+  /* 기울어진 카드가 화면 가장자리를 넘어 가로 스크롤이 생기지 않게 */
+  overflow-x: hidden;
   background-color: var(--board);
   background-image:
     radial-gradient(ellipse at 15% 10%, rgba(255, 255, 255, 0.07), transparent 50%),
@@ -35,7 +41,8 @@ body {
 .wrap {
   max-width: 880px;
   margin: 0 auto;
-  padding: 32px 16px 64px;
+  padding: 32px max(16px, env(safe-area-inset-right)) max(64px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
 }
 
 h1 {
@@ -188,10 +195,13 @@ button:disabled {
 .entries li[data-color="2"] { background: var(--note-2); }
 .entries li[data-color="3"] { background: var(--note-3); }
 
-.entries li:hover {
-  z-index: 1;
-  transform: rotate(0deg) scale(1.05);
-  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.25);
+/* 터치 화면에서는 호버가 눌린 채로 남기 때문에, 마우스가 있을 때만 적용 */
+@media (hover: hover) {
+  .entries li:hover {
+    z-index: 1;
+    transform: rotate(0deg) scale(1.05);
+    box-shadow: 0 14px 24px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.25);
+  }
 }
 
 .entries .content {
@@ -205,6 +215,58 @@ button:disabled {
   margin: 0;
   color: var(--ink-soft);
   font-size: 17px;
+}
+
+/* 모바일: 폼은 화면 너비에 맞추고, 포스트잇은 2열로 */
+@media (max-width: 520px) {
+  body {
+    font-size: 18px;
+  }
+
+  .wrap {
+    padding-top: 24px;
+  }
+
+  .intro {
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+
+  .card {
+    max-width: none;
+    padding: 24px 18px 20px;
+  }
+
+  input {
+    min-height: 44px;
+  }
+
+  button {
+    min-height: 48px;
+  }
+
+  h2 {
+    margin-top: 36px;
+    font-size: 26px;
+  }
+
+  .entries {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 14px;
+  }
+
+  .entries li {
+    min-height: 130px;
+    padding: 20px 12px 12px;
+  }
+
+  .entries .content {
+    font-size: 21px;
+  }
+
+  .entries .meta {
+    font-size: 15px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
