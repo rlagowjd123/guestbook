@@ -41,6 +41,14 @@ function formatTime(iso) {
   });
 }
 
+function hashString(text) {
+  let hash = 0;
+  for (const char of text) {
+    hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  }
+  return hash;
+}
+
 async function render() {
   try {
     const entries = await loadEntries();
@@ -50,6 +58,10 @@ async function render() {
 
     for (const entry of entries) {
       const item = document.createElement("li");
+      // 포스트잇 색과 기울기: 글마다 고정된 값이라 새 글이 올라와도 바뀌지 않아요.
+      const seed = hashString(entry.created_at + entry.nickname);
+      item.dataset.color = seed % 4;
+      item.style.setProperty("--tilt", `${((seed >> 3) % 7) - 3}deg`);
 
       const content = document.createElement("p");
       content.className = "content";
