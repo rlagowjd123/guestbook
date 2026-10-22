@@ -1,9 +1,9 @@
 /* 칠판 위에 포스트잇을 붙이는 방명록 */
 
 :root {
-  --board: #2b4a3d;
-  --chalk: #eef1e4;
-  --chalk-dim: #c3cdb8;
+  --board: #a03e66;
+  --chalk: #fff6f9;
+  --chalk-dim: #fde6ee;
   --paper: #fffbe6;
   --ink: #33291a;
   --ink-soft: #5a4f30;
